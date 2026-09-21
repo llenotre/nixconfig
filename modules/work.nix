@@ -5,6 +5,10 @@
     slack
   ];
 
+  home-manager.users.${username} = {
+    programs.git.userEmail = "luc.lenotre@clever-cloud.com";
+  };
+
   services = {
     osquery = {
       enable = true;

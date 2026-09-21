@@ -3,9 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
   let
     mkSystem = {
       username,
@@ -16,7 +20,10 @@
       specialArgs = { inherit username hostname; };
       modules = [
         ./hosts/${hostname}/configuration.nix
+        home-manager.nixosModules.home-manager
+
         ./modules/system.nix
+        ./modules/home.nix
       ]
       ++ extraModules;
     };
