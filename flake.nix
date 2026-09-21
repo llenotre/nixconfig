@@ -25,7 +25,7 @@
     nixosConfigurations = {
       work = mkSystem {
         username = "luc";
-        hostname = "work";
+        hostname = "CC-Luc";
         extraModules = [
           ./modules/laptop.nix
           ./modules/work.nix
