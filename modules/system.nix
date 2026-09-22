@@ -1,4 +1,4 @@
-{ pkgs, username, hostname, ... }:
+{ config, pkgs, username, hostname, ... }:
 {
   boot = {
     loader = {
@@ -39,28 +39,81 @@
       git
       gnome-calculator
       gnumake
-      kdePackages.kate
-      libbpf
       signal-desktop
       vim
       xxd
       zed-editor
     ];
   };
-  programs.firefox.enable = true;
+
+  # Sway's own dependencies come from programs.sway.extraPackages, which is
+  # left at its default. Overriding that option replaces the list rather than
+  # extending it, so anything extra belongs here instead.
+  environment.systemPackages = with pkgs; [
+    loupe
+    wl-clipboard
+  ];
+
+  # Sway config
+  environment.etc."sway/config.d/50-local.conf".text = ''
+    # Disable swaybar to replace it with noctalia's bar
+    bar bar-0 {
+      mode invisible
+      status_command true
+    }
+
+    # Sway does not read the xorg keyboard config, so mirror it here
+    input * {
+      xkb_layout ${config.services.xserver.xkb.layout}
+      xkb_options ${config.services.xserver.xkb.options}
+    }
+
+    input type:touchpad {
+      # finger tap to click: 1 finger left, 2 fingers right, 3 fingers middle.
+      tap_button_map lrm
+      # suppress the touchpad briefly after each keystroke
+      dwt enabled
+    }
+
+    bindsym --no-warn $mod+d exec ${config.programs.noctalia.package}/bin/noctalia msg panel-toggle launcher
+    bindsym --release Super_L exec ${config.programs.noctalia.package}/bin/noctalia msg panel-toggle launcher
+  '';
+
+  programs = {
+    firefox.enable = true;
+    sway = {
+      enable = true;
+      wrapperFeatures.gtk = true;
+    };
+    # Wayland shell: bar, launcher, notifications, polkit agent, OSDs
+    noctalia = {
+      enable = true;
+      systemd.enable = true;
+      # NetworkManager, bluetooth, UPower and a power profile daemon
+      recommendedServices.enable = true;
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  networking.hostName = hostname;
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = hostname;
+    networkmanager.enable = true;
+  };
 
   services = {
     # Use Wayland
-    xserver.enable = false;
+    xserver = {
+      enable = false;
+      # Keyboard layout
+      xkb = {
+        layout = "us";
+        options = "caps:escape_shifted_compose,compose:ralt";
+      };
+    };
 
-    # Enable the KDE Plasma Desktop Environment
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
+    gnome.gnome-keyring.enable = true;
 
     # Enable CUPS to print documents.
     printing.enable = true;
