@@ -11,7 +11,7 @@
 
       programs.git = {
         enable = true;
-        userName = "llenotre";
+        settings.user.name = "llenotre";
       };
     };
   };
