@@ -70,6 +70,8 @@
     }
 
     input type:touchpad {
+      # libinput ships tap-to-click off; sway does not turn it on for you
+      tap enabled
       # finger tap to click: 1 finger left, 2 fingers right, 3 fingers middle.
       tap_button_map lrm
       # suppress the touchpad briefly after each keystroke
