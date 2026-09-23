@@ -29,6 +29,7 @@
     description = "Luc Lenôtre";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      alacritty
       btop
       clang
       claude-code
@@ -74,6 +75,15 @@
       # suppress the touchpad briefly after each keystroke
       dwt enabled
     }
+
+    # Application shortcuts
+    bindsym $mod+t exec ${pkgs.alacritty}/bin/alacritty
+    bindsym --no-warn $mod+Return exec ${pkgs.alacritty}/bin/alacritty
+    bindsym --no-warn $mod+b exec ${config.programs.firefox.finalPackage}/bin/firefox
+    bindsym $mod+c exec ${pkgs.gnome-calculator}/bin/gnome-calculator
+    bindsym XF86Calculator exec ${pkgs.gnome-calculator}/bin/gnome-calculator
+    # $mod+b was the horizontal split; keep it reachable under Shift.
+    bindsym $mod+Shift+b splith
 
     bindsym --no-warn $mod+d exec ${config.programs.noctalia.package}/bin/noctalia msg panel-toggle launcher
     bindsym --release Super_L exec ${config.programs.noctalia.package}/bin/noctalia msg panel-toggle launcher
