@@ -1,4 +1,7 @@
 { config, pkgs, username, hostname, ... }:
+let
+  noctalia = "${config.programs.noctalia.package}/bin/noctalia";
+in
 {
   boot = {
     loader = {
@@ -47,9 +50,6 @@
     ];
   };
 
-  # Sway's own dependencies come from programs.sway.extraPackages, which is
-  # left at its default. Overriding that option replaces the list rather than
-  # extending it, so anything extra belongs here instead.
   environment.systemPackages = with pkgs; [
     loupe
     wl-clipboard
@@ -78,6 +78,15 @@
       dwt enabled
     }
 
+    bindsym XF86AudioLowerVolume exec ${noctalia} msg volume-down
+    bindsym XF86AudioRaiseVolume exec ${noctalia} msg volume-up
+    bindsym XF86AudioMute exec ${noctalia} msg volume-mute
+    bindsym XF86AudioMicMute exec ${noctalia} msg mic-mute
+    bindsym XF86MonBrightnessDown exec ${noctalia} msg brightness-down
+    bindsym XF86MonBrightnessUp exec ${noctalia} msg brightness-up
+
+    bindsym $mod+o exec ${noctalia} msg panel-toggle session
+
     # Application shortcuts
     bindsym $mod+t exec ${pkgs.alacritty}/bin/alacritty
     bindsym --no-warn $mod+Return exec ${pkgs.alacritty}/bin/alacritty
@@ -96,6 +105,10 @@
     sway = {
       enable = true;
       wrapperFeatures.gtk = true;
+      # Override default list
+      extraPackages = with pkgs; [
+        grim
+      ];
     };
     # Wayland shell: bar, launcher, notifications, polkit agent, OSDs
     noctalia = {

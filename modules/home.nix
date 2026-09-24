@@ -9,6 +9,11 @@
     users.${username} = {
       home.stateVersion = "26.05";
 
+      xdg.configFile."noctalia/brightness.toml".text = ''
+        [brightness]
+        enable_ddcutil = true
+      '';
+
       services.flameshot = {
         enable = true;
         settings = {
