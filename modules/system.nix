@@ -1,6 +1,7 @@
 { config, pkgs, username, hostname, ... }:
 let
   noctalia = "${config.programs.noctalia.package}/bin/noctalia";
+  zen = "${config.home-manager.users.${username}.programs.zen-browser.finalPackage}/bin/zen-beta";
 in
 {
   boot = {
@@ -95,7 +96,7 @@ in
     # Application shortcuts
     bindsym $mod+t exec ${pkgs.alacritty}/bin/alacritty
     bindsym --no-warn $mod+Return exec ${pkgs.alacritty}/bin/alacritty
-    bindsym --no-warn $mod+b exec ${config.programs.firefox.finalPackage}/bin/firefox
+    bindsym --no-warn $mod+b exec ${zen}
     bindsym $mod+c exec ${pkgs.gnome-calculator}/bin/gnome-calculator
     bindsym XF86Calculator exec ${pkgs.gnome-calculator}/bin/gnome-calculator
     # $mod+b was the horizontal split; keep it reachable under Shift.
@@ -106,7 +107,6 @@ in
   '';
 
   programs = {
-    firefox.enable = true;
     sway = {
       enable = true;
       wrapperFeatures.gtk = true;

@@ -7,9 +7,16 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, zen-browser, ... }:
   let
     mkSystem = {
       username,
@@ -17,13 +24,14 @@
       extraModules ? []
     }:
     nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit username hostname; };
+      specialArgs = { inherit username hostname zen-browser; };
       modules = [
         ./hosts/${hostname}/configuration.nix
         home-manager.nixosModules.home-manager
 
         ./modules/system.nix
         ./modules/home.nix
+        ./modules/zen.nix
       ]
       ++ extraModules;
     };
