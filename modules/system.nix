@@ -44,7 +44,6 @@ in
       gnome-calculator
       gnumake
       signal-desktop
-      vim
       xxd
       zed-editor
     ];
@@ -54,6 +53,12 @@ in
     loupe
     wl-clipboard
   ];
+
+  # Installs vim system-wide and sets EDITOR=vim
+  programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };
 
   # Sway config
   environment.etc."sway/config.d/50-local.conf".text = ''
