@@ -90,6 +90,10 @@ in
     bindsym XF86AudioMicMute exec ${noctalia} msg mic-mute
     bindsym XF86MonBrightnessDown exec ${noctalia} msg brightness-down
     bindsym XF86MonBrightnessUp exec ${noctalia} msg brightness-up
+    bindsym XF86AudioPlay exec ${noctalia} msg media toggle
+    bindsym XF86AudioPause exec ${noctalia} msg media toggle
+    bindsym XF86AudioNext exec ${noctalia} msg media next
+    bindsym XF86AudioPrev exec ${noctalia} msg media previous
 
     bindsym $mod+o exec ${noctalia} msg panel-toggle session
 
