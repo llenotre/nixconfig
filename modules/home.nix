@@ -26,7 +26,10 @@
 
       programs.git = {
         enable = true;
-        settings.user.name = "llenotre";
+        settings = {
+          user.name = "llenotre";
+          push.autoSetupRemote = true;
+        };
       };
     };
   };

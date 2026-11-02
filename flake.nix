@@ -38,6 +38,15 @@
   in
   {
     nixosConfigurations = {
+      gustave = mkSystem {
+        username = "luc";
+        hostname = "Gustave";
+        extraModules = [
+          ./modules/game.nix
+          ./modules/laptop.nix
+          ./modules/perso.nix
+        ];
+      };
       work = mkSystem {
         username = "luc";
         hostname = "CC-Luc";
