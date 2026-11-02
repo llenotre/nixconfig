@@ -69,6 +69,9 @@ in
       status_command true
     }
 
+    # Sway auto-picks scale 2 on HiDPI panels; force 100%
+    output * scale 1
+
     # Sway does not read the xorg keyboard config, so mirror it here
     input * {
       xkb_layout ${config.services.xserver.xkb.layout}
